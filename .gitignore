@@ -1,0 +1,7 @@
+/.project
+/.RData
+.Rproj.user
+*.Rproj
+.Rhistory
+/inst/doc/
+man

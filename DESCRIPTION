@@ -1,0 +1,16 @@
+Package: solartime
+Title: solar time utilities such as sun position and time of sunrise
+Version: 0.0.0.9000
+Author: Thomas Wutzler
+Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
+Description: Provide utilities to work with solar time, 
+  i.e. where noon is exactly when sun culminates.
+  Provides functions for computing sun position and times of sunrise and sunset.
+Depends: R (>= 3.2.0)
+Imports: lubridate
+Suggests: testthat, knitr
+License: GPL-3
+LazyLoad: yes
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1

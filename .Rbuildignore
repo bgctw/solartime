@@ -1,0 +1,20 @@
+^.*.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^README\.md$
+^README-.*\.png$
+^NEWS\.md$
+^NEWS\.Rmd$
+^vignettes/figure/.*$
+^vignettes/cache/.*$
+vignettes/.*_files/
+vignettes/.*\.html
+vignettes/.*\.md
+^scratch$
+^tmp$
+^.git$
+^.gitignore$
+^.project$	    # added by eclipse
+^cranComments.md$
+^readme.txt$
+^.*\.Rproj$
