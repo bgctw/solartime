@@ -55,18 +55,18 @@ computeSunriseHour <- function(
   if (isCorrectSolartime & any(!is.finite(c(longDeg, timeZone)))) stop(
     "if isCorrectSolartime, one needs to provide finite longDeg and timeZone")
   fracYearInRad <- 2 * pi * (doy - 1) / 365.24
-  solDeclRad <- ((0.33281 - 22.984*cos(fracYearInRad)
-                  - 0.34990*cos(2*fracYearInRad)
-                  - 0.13980*cos(3*fracYearInRad)
-                  + 3.7872*sin(fracYearInRad) + 0.03205*sin(2*fracYearInRad)
-                  + 0.07187*sin(3*fracYearInRad))/180*pi )
+  solDeclRad <- (
+    (0.33281 - 22.984*cos(fracYearInRad)
+     - 0.34990*cos(2*fracYearInRad) - 0.13980*cos(3*fracYearInRad)
+     + 3.7872*sin(fracYearInRad) + 0.03205*sin(2*fracYearInRad)
+     + 0.07187*sin(3*fracYearInRad))/180*pi )
   # compute time in radians
   # solved equation for SolElevRad in computeSunPositionDoyHour for elevation == 0
   # , i.e. sunrise
   solTimeRad <- {
-    cosSolTimeRad <- pmax(-1, pmin(+1
-                                   ,(sin(solDeclRad) * sin(latDeg/180*pi)) /
-                                     (cos(solDeclRad) * cos(latDeg/180*pi))
+    cosSolTimeRad <- pmax(-1, pmin(
+      +1,(sin(solDeclRad) * sin(latDeg/180*pi)) /
+        (cos(solDeclRad) * cos(latDeg/180*pi))
     ))
     acos( cosSolTimeRad )
   }
@@ -340,9 +340,12 @@ computeIsDayByLocation <- function(
   timestamp			##<< POSIXct vector
   , latDeg		  ##<< Latitude in (decimal) degrees
   , longDeg		  ##<< Longitude in (decimal) degrees
-  , timeZone	  ##<< Time zone (in hours) ahead of UTC (Central Europ is +1)
+  , timeZone = getHoursAheadOfUTC(timestamp)	 ##<< Time zone (in hours)
+  ## ahead of UTC (Central Europ is +1)
   , duskOffset = 0  ##<< integer scalar: time in hours after dusk for
   ## which records are still regarded as day
+  , isCorrectSolartime = TRUE	##<< set to FALSE to omit correction between
+  ## local time and solar time, e.g. if coordinates cannot be provided
 ){
   ##details<< computes hour of sunrise and sunset from given date in timezone
   ## hour (assuming dates are given in timezoen instead of solartime)
@@ -353,14 +356,14 @@ computeIsDayByLocation <- function(
   #sunriseLocal <- computeSunriseHour(
   #  doy, latDeg = latDeg, longDeg = longDeg, timeZone = timeZone)
   sunsetSolarHour <- 24 - sunriseSolarHour
-  hourDiff <- computeSolarToLocalTimeDifference(
-    longDeg, timeZone, doy = doy)
+  hourDiff <- if (!isCorrectSolartime) 0 else
+    computeSolarToLocalTimeDifference(longDeg, timeZone, doy = doy)
   sunriseTimezoneHour <- sunriseSolarHour - hourDiff
   sunsetTimezoneHour <- sunsetSolarHour - hourDiff
   ##value<< logical vector (length(date)): true if its daytime
-  computeIsDayByHour(timestamp, sunriseHour = sunriseTimezoneHour
-                     , sunsetHour = sunsetTimezoneHour
-                     , duskOffset = duskOffset	)
+  computeIsDayByHour(
+    timestamp, sunriseHour = sunriseTimezoneHour,
+    sunsetHour = sunsetTimezoneHour, duskOffset = duskOffset	)
 }
 attr(computeIsDayByLocation,"ex") <- function(){
   dateSeq <- seq( as.POSIXct("2017-03-20", tz = "Etc/GMT-1")

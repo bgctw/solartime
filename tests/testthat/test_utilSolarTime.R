@@ -124,3 +124,27 @@ test_that("computeIsDayByLocation",{
     , latDeg = 51, longDeg = 11.586, timeZone = +1)
   expect_equal(isDaySunset, c(TRUE, FALSE))
 })
+
+test_that("computeIsDayByLocation omit geocoordinates",{
+  today <- 340
+  midnight <- as.POSIXct("2017-12-06", tz = "Etc/GMT-1")
+  # test that elevation at sunrise is close to 0
+  # first with hours specified in solar time
+  # and with converting to local time
+  sunrise <- computeSunriseHour(
+    today, latDeg = 51, longDeg = 11.586, timeZone = +1
+    , isCorrectSolartime = FALSE)
+  sunset <- computeSunsetHour(
+    today, latDeg = 51, longDeg = 11.586, timeZone = +1
+    , isCorrectSolartime = FALSE)
+  # one second before and after sunrise (at sunrise numerical erros confound)
+  isDaySunrise <- computeIsDayByLocation(
+    midnight + sunrise*3600 + c(-1L,+1L), timeZone = +1
+    , latDeg = 51, longDeg = NA, isCorrectSolartime = FALSE)
+  expect_equal(isDaySunrise, c(FALSE, TRUE))
+  isDaySunset <- computeIsDayByLocation(
+    midnight + sunset*3600 + c(-1L,+1L), timeZone = +1
+    , latDeg = 51, longDeg = NA, isCorrectSolartime = FALSE)
+  expect_equal(isDaySunset, c(TRUE, FALSE))
+})
+
