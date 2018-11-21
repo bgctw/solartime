@@ -292,8 +292,10 @@ computeSunPositionDoyHour <- function(
     hour = solarTimeHour		    ##<< Solar time in fractional hours after
     ## midnight, (or given hour if isCorrectSolartime = FALSE).
     , declination = SolDeclRad	##<< Solar declination (rad)
-    , elevation = SolElevRad		##<< Solar elevation with 0 at horizon (rad)
-    , azimuth = SolAzimRad		  ##<< Solar azimuth with 0 at North (rad)
+    , elevation = SolElevRad		##<< Solar elevation (rad)
+    ## with 0 at horizon increasing towards zenith
+    , azimuth = SolAzimRad		  ##<< Solar azimuth (rad)
+    ## with 0 at North increasing eastwards
   )
   ans
 }
