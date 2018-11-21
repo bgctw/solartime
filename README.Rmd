@@ -113,15 +113,11 @@ Neglecting the difference between solar time and local time introduces a bias.
 Daylength is not biased by neglecting solar time correction.
 
 ```{r}
-today <- as.POSIXlt(ISOdate(2018,3,1,0, tz = "Etc/GMT-1"))$yday
-# sunrise without correcting for solar time
-(sunrise <- computeSunriseHour(
-  today, latDeg = latDeg, isCorrectSolartime = FALSE))
-# with correcting for solar time
-(sunrise <- computeSunriseHour(
-  today, latDeg = latDeg, longDeg = 11.586, timeZone = +1))
-(sunset <- computeSunsetHour(
-  today, latDeg = latDeg, longDeg = 11.586, timeZone = +1))
+today <- as.POSIXlt(ISOdate(2018,3,1,0, tz = "Etc/GMT-1"))
+(sunrise <- computeSunriseHour(today, latDeg = latDeg
+                               , isCorrectSolartime = FALSE))
+(sunrise <- computeSunriseHour(today, latDeg = latDeg, longDeg = 11.586))
+(sunset <- computeSunsetHour(today, latDeg = latDeg, longDeg = 11.586))
 (daylength <- computeDayLength(today, latDeg = latDeg))
 ```
 
@@ -129,8 +125,8 @@ Sunrise is set to 12 for polar nights and 0 for polar days.
 Similarly, sunset is set to 12 for polar nights and to 0 for polar days.
 ```{r}
 doy <- 1:366
-sunrise <- computeSunriseHour( doy, latDeg = +80, isCorrectSolartime = FALSE)
-sunset <- computeSunsetHour( doy, latDeg = +80, isCorrectSolartime = FALSE)
+sunrise <- computeSunriseHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE)
+sunset <- computeSunsetHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE)
 par(mfrow = c(1,2)); plot(sunrise ~ doy ); plot(sunset ~ doy )
 ```
 
@@ -150,9 +146,9 @@ isDay <- computeIsDayByLocation(dateSeq, latDeg = 50.93, longDeg = 11.59)
 ```{r echo=FALSE}
 plot( isDay ~ dateSeq )
 yday <- as.POSIXlt(dateSeq[1])$yday + 1L
-sunrise <- computeSunriseHour(
+sunrise <- computeSunriseHourDoy(
   yday, latDeg = 50.93, longDeg = 11.59, timeZone = 1)
-sunset <- computeSunsetHour(
+sunset <- computeSunsetHourDoy(
   yday, latDeg = 50.93, longDeg = 11.59, timeZone = 1)
 abline( v = trunc(dateSeq[1], units = "days") + c(sunrise,sunset)*3600L )
 ```

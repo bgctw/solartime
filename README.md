@@ -33,7 +33,7 @@ Usage
 require(solartime, quietly = TRUE)
 ```
 
-### Correcting for difference to local time
+### Correcting for difference of solar time to local time
 
 The city of Jena is located west of the timezone's meridian. Hence, the sun culminates around 13 minutes later.
 
@@ -56,7 +56,7 @@ plot(locaDiffDoi  ~ doi, ylab = "time difference solar - local time (min)")
 abline(h = localDiff); abline(h = 0, lty = "dotted")
 ```
 
-![](tools/README-unnamed-chunk-5-1.png)
+![](tools/README-unnamed-chunk-6-1.png)
 
 During most days, the sun culmintes after noon, but during a few days in autumn the sun culminates earlier than noon of the lcoal time zone.
 
@@ -99,32 +99,28 @@ In the example the azimuth increases from slightly more than zero at midnight to
 Sunrise and sunset are computed in fractional hours after midnight. Neglecting the difference between solar time and local time introduces a bias. Daylength is not biased by neglecting solar time correction.
 
 ``` r
-today <- as.POSIXlt(ISOdate(2018,3,1,0, tz = "Etc/GMT-1"))$yday
-# sunrise without correcting for solar time
-(sunrise <- computeSunriseHour(
-  today, latDeg = latDeg, isCorrectSolartime = FALSE))
-#> [1] 6.717838
-# with correcting for solar time
-(sunrise <- computeSunriseHour(
-  today, latDeg = latDeg, longDeg = 11.586, timeZone = +1))
-#> [1] 7.165058
-(sunset <- computeSunsetHour(
-  today, latDeg = latDeg, longDeg = 11.586, timeZone = +1))
-#> [1] 17.72938
+today <- as.POSIXlt(ISOdate(2018,3,1,0, tz = "Etc/GMT-1"))
+(sunrise <- computeSunriseHour(today, latDeg = latDeg
+                               , isCorrectSolartime = FALSE))
+#> [1] 6.685696
+(sunrise <- computeSunriseHour(today, latDeg = latDeg, longDeg = 11.586))
+#> [1] 7.129989
+(sunset <- computeSunsetHour(today, latDeg = latDeg, longDeg = 11.586))
+#> [1] 17.7586
 (daylength <- computeDayLength(today, latDeg = latDeg))
-#> [1] 10.56432
+#> [1] 10.62861
 ```
 
 Sunrise is set to 12 for polar nights and 0 for polar days. Similarly, sunset is set to 12 for polar nights and to 0 for polar days.
 
 ``` r
 doy <- 1:366
-sunrise <- computeSunriseHour( doy, latDeg = +80, isCorrectSolartime = FALSE)
-sunset <- computeSunsetHour( doy, latDeg = +80, isCorrectSolartime = FALSE)
+sunrise <- computeSunriseHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE)
+sunset <- computeSunsetHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE)
 par(mfrow = c(1,2)); plot(sunrise ~ doy ); plot(sunset ~ doy )
 ```
 
-![](tools/README-unnamed-chunk-8-1.png)
+![](tools/README-unnamed-chunk-9-1.png)
 
 ### Further Utilities
 
@@ -135,11 +131,10 @@ dateSeq <- seq(
   as.POSIXct("2017-03-20", tz = "Etc/GMT-1")
   , as.POSIXct("2017-03-21", tz = "Etc/GMT-1")
   , by = "30 min")
-isDay <- computeIsDayByLocation(
-  dateSeq, latDeg = 50.93, longDeg = 11.59, timeZone = 1)
+isDay <- computeIsDayByLocation(dateSeq, latDeg = 50.93, longDeg = 11.59)
 ```
 
-![](tools/README-unnamed-chunk-10-1.png)
+![](tools/README-unnamed-chunk-11-1.png)
 
 Function `getHoursAheadOfUTC` provides the integer timeZone argument of a timestamp, required many other functions of the package. Similarly, `getFractionalHours` provides fractional hours after midnight of a timestamp.
 

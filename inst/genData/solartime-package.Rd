@@ -23,7 +23,7 @@ Most fundamental funcions are
 On this basis, properties are computed such as
 \itemize{
   \item hour of sunrise and sunset:
-       \code{\link{computeSunriseHour}},\code{\link{computeSunriseHour}}
+       \code{\link{computeSunriseHour}},\code{\link{computeSunsetHour}}
   \item daylength in hours: \code{\link{computeDayLength}}
   \item flagging times as day or night:
      \code{\link{computeIsDayByHour}} and

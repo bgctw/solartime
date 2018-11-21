@@ -17,38 +17,38 @@ test_that("computeSolarToLocalTimeDifference",{
                 , tolerance = 5e-4, scale = 1)
 })
 
-test_that("computeSunriseHour",{
+test_that("computeSunriseHourDoy",{
   today <- 340
   # regression tests
-  sunriseSolar <- computeSunriseHour(
+  sunriseSolar <- computeSunriseHourDoy(
     today, latDeg = 51, isCorrectSolartime = FALSE)
-  sunriseLocaltime <- computeSunriseHour(
+  sunriseLocaltime <- computeSunriseHourDoy(
     today, latDeg = 51, longDeg = 11.586, timeZone = +1)
   expect_equal( sunriseSolar, 8.03, tolerance = 5e-3, scale = 1)
   expect_equal( sunriseLocaltime, 8.11, tolerance = 5e-3, scale = 1)
 })
 
-test_that("computeSunsetHour",{
+test_that("computeSunsetHourDoy",{
   today <- 340
   # regression tests
-  sunsetSolar <- computeSunsetHour(
+  sunsetSolar <- computeSunsetHourDoy(
     today, latDeg = 51, isCorrectSolartime = FALSE)
-  sunsetLocaltime <- computeSunsetHour(
+  sunsetLocaltime <- computeSunsetHourDoy(
     today, latDeg = 51, longDeg = 11.586, timeZone = +1)
   expect_equal( sunsetSolar, 15.97, tolerance = 5e-3, scale = 1)
   expect_equal( sunsetLocaltime, 16.04, tolerance = 5e-3, scale = 1)
 })
 
-test_that("computeDayLength",{
+test_that("computeDayLengthDoy",{
   today <- 340
   # regression tests
-  dayLength <- computeDayLength(today, latDeg = 51)
+  dayLength <- computeDayLengthDoy(today, latDeg = 51)
   expect_equal( dayLength, 7.93, tolerance = 5e-3, scale = 1)
   # testing north pole
-  dayLengthNP <- computeDayLength( c(1,180), latDeg = +80)
+  dayLengthNP <- computeDayLengthDoy( c(1,180), latDeg = +80)
   expect_equal( dayLengthNP, c(0,24))
   # testing south pole
-  dayLengthSP <- computeDayLength( c(1,180), latDeg = -80)
+  dayLengthSP <- computeDayLengthDoy( c(1,180), latDeg = -80)
   expect_equal( dayLengthSP, c(24,0))
 })
 
@@ -56,7 +56,7 @@ test_that("computeSunPostionDoyHour",{
   today <- 340
   # test that elevation at sunrise is close to 0
   # first with hours specified in solar time
-  sunrise <- computeSunriseHour(today, latDeg = 51, isCorrectSolartime = FALSE)
+  sunrise <- computeSunriseHourDoy(today, latDeg = 51, isCorrectSolartime = FALSE)
   sunpos <- computeSunPositionDoyHour(
     today, sunrise, latDeg = 51, isCorrectSolartime = FALSE)
   expect_true( is.matrix(sunpos))
@@ -64,7 +64,7 @@ test_that("computeSunPostionDoyHour",{
   expect_equivalent( sunpos[1L,"hour"], sunrise)
   expect_equal( as.vector(sunpos[1L,"elevation"]), 0, tolerance = 1e-10)
   # and with converting to local time
-  sunrise <- computeSunriseHour(
+  sunrise <- computeSunriseHourDoy(
     today, latDeg = 51, longDeg = 11.586, timeZone = +1)
   sunpos <- computeSunPositionDoyHour(
     today, sunrise, latDeg = 51, longDeg = 11.586, timeZone = +1)
@@ -73,7 +73,7 @@ test_that("computeSunPostionDoyHour",{
   #
   # test that elevation at sunset is close to 0
   # first with hours specified in solar time
-  sunset <- computeSunsetHour(today, latDeg = 51, isCorrectSolartime = FALSE)
+  sunset <- computeSunsetHourDoy(today, latDeg = 51, isCorrectSolartime = FALSE)
   sunpos <- computeSunPositionDoyHour(
     today, sunset, latDeg = 51, isCorrectSolartime = FALSE)
   expect_true( is.matrix(sunpos))
@@ -81,7 +81,7 @@ test_that("computeSunPostionDoyHour",{
   expect_equivalent( sunpos[1L,"hour"], sunset)
   expect_equal( as.vector(sunpos[1L,"elevation"]), 0, tolerance = 1e-10)
   # and with converting to local time
-  sunset <- computeSunsetHour(
+  sunset <- computeSunsetHourDoy(
     today, latDeg = 51, longDeg = 11.586, timeZone = +1)
   sunpos <- computeSunPositionDoyHour(
     today, sunset, latDeg = 51, longDeg = 11.586, timeZone = +1)
@@ -111,9 +111,9 @@ test_that("computeIsDayByLocation",{
   # test that elevation at sunrise is close to 0
   # first with hours specified in solar time
   # and with converting to local time
-  sunrise <- computeSunriseHour(
+  sunrise <- computeSunriseHourDoy(
     today, latDeg = 51, longDeg = 11.586, timeZone = +1)
-  sunset <- computeSunsetHour(
+  sunset <- computeSunsetHourDoy(
     today, latDeg = 51, longDeg = 11.586, timeZone = +1)
   # one second before and after sunrise (at sunrise numerical erros confound)
   isDaySunrise <- computeIsDayByLocation( midnight + sunrise*3600 + c(-1L,+1L)
@@ -131,10 +131,10 @@ test_that("computeIsDayByLocation omit geocoordinates",{
   # test that elevation at sunrise is close to 0
   # first with hours specified in solar time
   # and with converting to local time
-  sunrise <- computeSunriseHour(
+  sunrise <- computeSunriseHourDoy(
     today, latDeg = 51, longDeg = 11.586, timeZone = +1
     , isCorrectSolartime = FALSE)
-  sunset <- computeSunsetHour(
+  sunset <- computeSunsetHourDoy(
     today, latDeg = 51, longDeg = 11.586, timeZone = +1
     , isCorrectSolartime = FALSE)
   # one second before and after sunrise (at sunrise numerical erros confound)

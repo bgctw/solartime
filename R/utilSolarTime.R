@@ -40,8 +40,23 @@ getFractionalHours <- function(
 #' @export
 computeSunriseHour <- function(
   ### Compute the hour of sunrise for given day and coordinates
-  doy	##<< integer vector with day of year [DoY, 1..366],
-  ## same length as Hour or length 1
+  timestamp  ##<< POSIXt vector
+  , latDeg		                    ##<< Latitude in (decimal) degrees
+  , longDeg=NA	                  ##<< Longitude in (decimal) degrees
+  ## (not required if solar time is sufficient)
+  , timeZone=getHoursAheadOfUTC(timestamp)   ##<< Time zone (in hours) ahead
+  ## of UTC (Central Europe is +1) (not required if solar time is sufficient)
+  , ... ##<< further arguments to \code{\link{computeSunriseHourDoy}}
+){
+  doy <- as.POSIXlt(timestamp)$yday + 1L
+  ##value<< result of \code{\link{computeSunriseHourDoy}}
+  computeSunriseHourDoy(doy, latDeg, longDeg, timeZone, ...)
+}
+
+#' @export
+computeSunriseHourDoy <- function(
+  ### Compute the hour of sunrise for given day and coordinates
+  doy	            ##<< integer vector with day of year [DoY, 1..366]
   , latDeg		                    ##<< Latitude in (decimal) degrees
   , longDeg=NA	                  ##<< Longitude in (decimal) degrees
   ## (not required if solar time is sufficient)
@@ -88,26 +103,42 @@ computeSunriseHour <- function(
   ## Polar night is indicated by 12h, polar day by 0h.
   hour
 }
-attr(computeSunriseHour,"ex") <- function(){
+attr(computeSunriseHourDoy,"ex") <- function(){
   today <-
     as.POSIXlt(Sys.Date())$yday
-  (sunrise <- computeSunriseHour(today, latDeg = 51, isCorrectSolartime = FALSE))
-  (sunrise <- computeSunriseHour(today, latDeg = 51, longDeg = 11.586, timeZone = +1))
+  (sunrise <- computeSunriseHourDoy(today, latDeg = 51, isCorrectSolartime = FALSE))
+  (sunrise <- computeSunriseHourDoy(today, latDeg = 51, longDeg = 11.586, timeZone = +1))
   # elevation near zero
   computeSunPositionDoyHour(160, sunrise, latDeg = 51, isCorrectSolartime = FALSE)
   #
   doy <- 1:366
-  plot( computeSunriseHour(doy, latDeg = 51, isCorrectSolartime = FALSE) ~ doy )
+  plot( computeSunriseHourDoy(doy, latDeg = 51, isCorrectSolartime = FALSE) ~ doy )
   # north pole: daylength 0 and 24 hours
-  plot( computeSunriseHour( doy, latDeg = +80, isCorrectSolartime = FALSE) ~ doy )
-  plot( computeSunriseHour( doy, latDeg = -80, isCorrectSolartime = FALSE) ~ doy )
+  plot( computeSunriseHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE) ~ doy )
+  plot( computeSunriseHourDoy( doy, latDeg = -80, isCorrectSolartime = FALSE) ~ doy )
 }
 
 #' @export
 computeSunsetHour <- function(
   ### Compute the hour of sunrise for given day and coordinates
-  doy	##<< integer vector with day of year [DoY, 1..366],
-  ## same length as Hour or length 1
+  timestamp                   ##<< POSIXt vector
+  , latDeg		                ##<< Latitude in (decimal) degrees
+  , longDeg=NA	              ##<< Longitude in (decimal) degrees
+  ## (not required if solar time is sufficient)
+  , timeZone=getHoursAheadOfUTC(timestamp)   ##<< Time zone (in hours) ahead
+  ## of UTC (Central Europe is +1) (not required if solar time is sufficient)
+  , ... ##<< further arguments to \code{\link{computeSunsetHourDoy}}
+){
+  doy <- as.POSIXlt(timestamp)$yday + 1L
+  ##value<< result of \code{\link{computeSunsetHourDoy}}
+  computeSunsetHourDoy(doy, latDeg, longDeg, timeZone, ...)
+}
+
+
+#' @export
+computeSunsetHourDoy <- function(
+  ### Compute the hour of sunrise for given day and coordinates
+  doy	                ##<< integer vector with day of year [DoY, 1..366]
   , latDeg		                    ##<< Latitude in (decimal) degrees
   , longDeg=NA	                  ##<< Longitude in (decimal) degrees
   ## (not required if solar time is sufficient)
@@ -121,7 +152,7 @@ computeSunsetHour <- function(
   if (isCorrectSolartime & any(!is.finite(c(longDeg, timeZone)))) stop(
     "if isCorrectSolartime, one needs to provide finite longDeg and timeZone")
   # compute solar sunrise hour, that one is symmetric around noon
-  sunriseSolarHour <- computeSunriseHour(
+  sunriseSolarHour <- computeSunriseHourDoy(
     doy, latDeg = latDeg, isCorrectSolartime = FALSE)
   sunsetSolarHour <- 24 - sunriseSolarHour
   sunsetHour <- if (isCorrectSolartime) {
@@ -134,17 +165,17 @@ computeSunsetHour <- function(
   ## Polar night is indicated by 12h, polar day by 24h.
   sunsetHour
 }
-attr(computeSunsetHour,"ex") <- function(){
+attr(computeSunsetHourDoy,"ex") <- function(){
   today <-
     as.POSIXlt(Sys.Date())$yday
-  (sunset <- computeSunsetHour(today, latDeg = 51, isCorrectSolartime = FALSE))
-  (sunset <- computeSunsetHour(today, latDeg = 51, longDeg = 11.586, timeZone = +1))
+  (sunset <- computeSunsetHourDoy(today, latDeg = 51, isCorrectSolartime = FALSE))
+  (sunset <- computeSunsetHourDoy(today, latDeg = 51, longDeg = 11.586, timeZone = +1))
   #
   doy <- 1:366
-  plot( computeSunsetHour(doy, latDeg = 51, isCorrectSolartime = FALSE) ~ doy )
+  plot( computeSunsetHourDoy(doy, latDeg = 51, isCorrectSolartime = FALSE) ~ doy )
   # north pole: daylength 0 and 24 hours
-  plot( computeSunsetHour( doy, latDeg = +80, isCorrectSolartime = FALSE) ~ doy )
-  plot( computeSunsetHour( doy, latDeg = -80, isCorrectSolartime = FALSE) ~ doy )
+  plot( computeSunsetHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE) ~ doy )
+  plot( computeSunsetHourDoy( doy, latDeg = -80, isCorrectSolartime = FALSE) ~ doy )
 }
 
 #' @export
@@ -187,22 +218,34 @@ attr(computeSolarToLocalTimeDifference,"ex") <- function(){
 #' @export
 computeDayLength <- function(
   ### Compute the Day-length in hours for given time and coordinates
+  timestamp           ##<< POSIXt vector
+  , latDeg		        ##<< Latitude in (decimal) degrees
+  , ...   ##<< further arguments to \code{\link{computeDayLengthDoy}}
+){
+  doy <- as.POSIXlt(timestamp)$yday + 1L
+  ##value<< result of \code{\link{computeDayLengthDoy}}
+  computeDayLengthDoy(doy, latDeg, ...)
+}
+
+#' @export
+computeDayLengthDoy <- function(
+  ### Compute the Day-length in hours for given time and coordinates
   doy	      ##<< integer vector with day of year [DoY, 1..366],
   ## same length as Hour or length 1
   , latDeg		        ##<< Latitude in (decimal) degrees
 ){
-  solTimeHour <- computeSunriseHour(
+  solTimeHour <- computeSunriseHourDoy(
     doy = doy, latDeg = latDeg, isCorrectSolartime = FALSE)
   ##value<< numeric vector of length(doy) giving the
   ## time between surise and sunset in hours
   24 - 2*solTimeHour
 }
-attr(computeDayLength,"ex") <- function(){
+attr(computeDayLengthDoy,"ex") <- function(){
   doy <- 1:366
-  plot( computeDayLength(doy, latDeg = 51) ~ doy)
+  plot( computeDayLengthDoy(doy, latDeg = 51) ~ doy)
   # north pole: daylength 0 and 24 hours
-  plot( computeDayLength( doy, latDeg = +80) ~ doy )
-  plot( computeDayLength( doy, latDeg = -80) ~ doy )
+  plot( computeDayLengthDoy( doy, latDeg = +80) ~ doy )
+  plot( computeDayLengthDoy( doy, latDeg = -80) ~ doy )
 }
 
 #' @export
@@ -340,9 +383,9 @@ computeIsDayByLocation <- function(
   ## hour (assuming dates are given in timezoen instead of solartime)
   doy <- as.POSIXlt(timestamp)$yday + 1L
   # correct for solar time only afterwards to get symmetric hours around noon
-  sunriseSolarHour <- computeSunriseHour(
+  sunriseSolarHour <- computeSunriseHourDoy(
     doy, latDeg = latDeg, isCorrectSolartime = FALSE)
-  #sunriseLocal <- computeSunriseHour(
+  #sunriseLocal <- computeSunriseHourDoy(
   #  doy, latDeg = latDeg, longDeg = longDeg, timeZone = timeZone)
   sunsetSolarHour <- 24 - sunriseSolarHour
   hourDiff <- if (!isCorrectSolartime) 0 else
@@ -362,9 +405,9 @@ attr(computeIsDayByLocation,"ex") <- function(){
     dateSeq, latDeg = 50.93, longDeg = 11.59, timeZone = 1)
   plot( tmp ~ dateSeq )
   yday <- as.POSIXlt(dateSeq[1])$yday + 1L
-  sunrise <- computeSunriseHour(
+  sunrise <- computeSunriseHourDoy(
     yday, latDeg = 50.93, longDeg = 11.59, timeZone = 1)
-  sunset <- computeSunsetHour(
+  sunset <- computeSunsetHourDoy(
     yday, latDeg = 50.93, longDeg = 11.59, timeZone = 1)
   abline( v = trunc(dateSeq[1], units = "days") + c(sunrise,sunset)*3600L )
 }
