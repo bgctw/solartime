@@ -302,19 +302,6 @@ attr(computeSunPositionDoyHour,"ex") <- function(){
     160, hour = 0:24, latDeg = 51, longDeg = 13.6, timeZone = 1L)
 }
 
-roundSec <- function(
-  ### round times to given time interval
-  x           ##<< vector of POSIXct, times to round
-  , sec = 180  ##<< rounding interval, default each 180 seconds, i.e. 3 minutes
-  , tzone = attributes(x[1])$tzone
-){
-  # from twMisc, tests there
-  structure(.POSIXct(
-    floor((as.numeric(x) + (sec/2)) / sec) * sec
-  )
-  ,tzone = tzone)
-}
-
 #' @export
 computeIsDayByHour <- function(
   ### tell for each date, whether its daytime
