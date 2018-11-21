@@ -16,7 +16,7 @@ vignettes/.*\.md
 ^.git$
 ^.gitignore$
 ^.project$	    # added by eclipse
-^cranComments.md$
+^cran-comments.md$
 ^readme.txt$
 ^.*\.Rproj$
 ^\.travis\.yml$
