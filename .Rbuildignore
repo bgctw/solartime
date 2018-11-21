@@ -19,3 +19,4 @@ vignettes/.*\.md
 ^cranComments.md$
 ^readme.txt$
 ^.*\.Rproj$
+^\.travis\.yml$
