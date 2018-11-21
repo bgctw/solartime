@@ -13,7 +13,7 @@ Provides functions for computing sun position and times of sunrise and sunset.
 
 \details{
 
-Most fundamental funcions are
+Most fundamental functions are
 \itemize{
   \item corrected fractional hour \code{\link{getSolarTimeHour}}
     based on \code{\link{computeSolarToLocalTimeDifference}}

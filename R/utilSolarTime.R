@@ -185,7 +185,7 @@ computeSolarToLocalTimeDifference <- function(
   , timeZone	              ##<< Time zone (in hours) ahead of UTC (Berlin is +1)
   , doy = integer(0)	##<< integer vector with day of year [DoY, 1..366],
   ## Specify NA get mean solar time across the year instead of apparent solar
-  ## time (i.e. with differences throughout the year due to eccentricy
+  ## time (i.e. with differences throughout the year due to eccentricity
   ## of earth orbit)
   , fracYearInRad = 2 * pi * (doy - 1)/365.24 ##<< may specify instead
   ## of doy for efficiency.
@@ -210,7 +210,7 @@ attr(computeSolarToLocalTimeDifference,"ex") <- function(){
   # due to longitude: west of timezone meridian: sun culminates later,
   # solar time is less than local time
   (localDiff <- computeSolarToLocalTimeDifference(longDeg, 1L)*60)
-  # taking into account shift during the year due to earth orbit eccentricy
+  # taking into account shift during the year due to earth orbit eccentricity
   plot( computeSolarToLocalTimeDifference(longDeg, 1L, doi)*60 ~ doi )
   abline(h = localDiff)
 }
@@ -237,7 +237,7 @@ computeDayLengthDoy <- function(
   solTimeHour <- computeSunriseHourDoy(
     doy = doy, latDeg = latDeg, isCorrectSolartime = FALSE)
   ##value<< numeric vector of length(doy) giving the
-  ## time between surise and sunset in hours
+  ## time between sunrise and sunset in hours
   24 - 2*solTimeHour
 }
 attr(computeDayLengthDoy,"ex") <- function(){
@@ -277,7 +277,7 @@ computeSunPositionDoyHour <- function(
   , latDeg		                 ##<< Latitude in (decimal) degrees
   , longDeg=NA	               ##<< Longitude in (decimal) degrees
   , timeZone=NA                ##<< Time zone (in hours) ahead of UTC
-  ## (Central Europ is +1)
+  ## (Central Europe is +1)
   , isCorrectSolartime = TRUE	 ##<< by default corrects hour
   ## (given in local winter time) for latitude to solar time
   ## (where noon is exactly at 12:00). Set this to FALSE if times are
@@ -373,14 +373,14 @@ computeIsDayByLocation <- function(
   , latDeg		  ##<< Latitude in (decimal) degrees
   , longDeg		  ##<< Longitude in (decimal) degrees
   , timeZone = getHoursAheadOfUTC(timestamp)	 ##<< Time zone (in hours)
-  ## ahead of UTC (Central Europ is +1)
+  ## ahead of UTC (Central Europe is +1)
   , duskOffset = 0  ##<< integer scalar: time in hours after dusk for
   ## which records are still regarded as day
   , isCorrectSolartime = TRUE	##<< set to FALSE to omit correction between
   ## local time and solar time, e.g. if coordinates cannot be provided
 ){
   ##details<< computes hour of sunrise and sunset from given date in timezone
-  ## hour (assuming dates are given in timezoen instead of solartime)
+  ## hour (assuming dates are given in timezone instead of solartime)
   doy <- as.POSIXlt(timestamp)$yday + 1L
   # correct for solar time only afterwards to get symmetric hours around noon
   sunriseSolarHour <- computeSunriseHourDoy(

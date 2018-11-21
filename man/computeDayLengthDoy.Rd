@@ -10,7 +10,7 @@ same length as Hour or length 1}
 }
 
 \value{numeric vector of length(doy) giving the
-time between surise and sunset in hours}
+time between sunrise and sunset in hours}
 
 \author{Thomas Wutzler}
 

@@ -12,7 +12,7 @@ as decimal hour [0..24)}
   \item{latDeg}{Latitude in (decimal) degrees}
   \item{longDeg}{Longitude in (decimal) degrees}
   \item{timeZone}{Time zone (in hours) ahead of UTC
-(Central Europ is +1)}
+(Central Europe is +1)}
   \item{isCorrectSolartime}{by default corrects hour
 (given in local winter time) for latitude to solar time
 (where noon is exactly at 12:00). Set this to FALSE if times are

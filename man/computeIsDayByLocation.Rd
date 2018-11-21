@@ -10,14 +10,14 @@
   \item{latDeg}{Latitude in (decimal) degrees}
   \item{longDeg}{Longitude in (decimal) degrees}
   \item{timeZone}{Time zone (in hours)
-ahead of UTC (Central Europ is +1)}
+ahead of UTC (Central Europe is +1)}
   \item{duskOffset}{integer scalar: time in hours after dusk for
 which records are still regarded as day}
   \item{isCorrectSolartime}{set to FALSE to omit correction between
 local time and solar time, e.g. if coordinates cannot be provided}
 }
 \details{computes hour of sunrise and sunset from given date in timezone
-hour (assuming dates are given in timezoen instead of solartime)}
+hour (assuming dates are given in timezone instead of solartime)}
 \value{logical vector (length(date)): true if its daytime}
 
 \author{Thomas Wutzler}
