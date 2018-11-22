@@ -1,0 +1,175 @@
+---
+output: 
+  rmarkdown::html_vignette:
+    keep_md: true
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown_notangle}
+  %\VignetteIndexEntry{overview}
+  %\usepackage[UTF-8]{inputenc}
+---
+
+```{r, include = FALSE}
+# do not execute on CRAN: 
+# https://stackoverflow.com/questions/28961431/computationally-heavy-r-vignettes
+#is_check <- ("CheckExEnv" %in% search()) || any(c("_R_CHECK_TIMINGS_",
+#             "_R_CHECK_LICENSE_") %in% names(Sys.getenv()))
+#knitr::opts_chunk$set(eval = !is_check)
+```
+
+```{r setup, include = FALSE}
+#rmarkdown::render("vignettes/overview.Rmd")
+knitr::opts_knit$set(root.dir = '..')
+knitr::opts_chunk$set(
+    fig.align = "center"
+    #, fig.width = 3.27, fig.height = 2.5, dev.args = list(pointsize = 10)
+    #,cache = TRUE
+    , fig.width = 4.3, fig.height = 3.2, dev.args = list(pointsize = 10)
+    #, fig.width = 6.3, fig.height = 6.2, dev.args = list(pointsize = 10)
+    # works with html but causes problems with latex
+    #,out.extra = 'style = "display:block; margin: auto"' 
+    )
+knitr::knit_hooks$set(spar = function(before, options, envir) {
+    if (before) {
+        par(las = 1 )                   #also y axis labels horizontal
+        par(mar = c(1.8,2.3,0,0) + 0.3 )  #margins
+        par(tck = 0.02 )                          #axe-tick length inside plots             
+        par(mgp = c(1.1,0.2,0) )  #positioning of axis title, axis labels, axis
+     }
+})
+```
+
+
+## Overview
+
+The `solartime` package provides utilities to work with solar time, 
+i.e. where noon is exactly when sun culminates.
+It provides functions to compute
+
+- difference between local time zone and solar time
+- sun position
+- sunrise, sunset, daylength, and daytime flags
+
+## Usage
+
+```{r}
+require(solartime)
+```
+
+### Difference between solar time and local time
+
+The city of Jena is located west of the timezone's meridian.
+Hence, the sun culminates around 13 minutes later.
+
+```{r}
+latDeg <- 50.93; longDeg <- 11.57
+(localDiff <- computeSolarToLocalTimeDifference(longDeg, 1L)*60)
+```
+The time difference shifts during the year because of 
+[earth orbit's eccentricity](https://en.wikipedia.org/wiki/Orbital_eccentricity).
+
+```{r}
+doy <- 1:366
+locaDiffDoi <- computeSolarToLocalTimeDifference(longDeg, 1L, doy)*60
+plot(locaDiffDoi  ~ doy, ylab = "time difference solar - local time (min)")
+abline(h = localDiff); abline(h = 0, lty = "dotted")
+```
+
+During most days, the sun culmintes after noon, but during a few days 
+in autumn the sun culminates earlier than noon of the lcoal time zone.
+
+
+### Computing sun position
+
+Using function `computeSunPosition`.
+
+```{r}
+times <- seq( 
+  ISOdate(2018, 11, 21, 0, tz = "Etc/GMT-1"), by = "2 hour", length.out = 13)
+ans <- computeSunPosition(times, latDeg = latDeg, longDeg = longDeg)
+cbind(data.frame(timestamp = times), as.data.frame(ans))
+```
+
+The return value is a data.frame with polar coordinates of the sun in radian
+on the [horizontal coordinatesystem](https://en.wikipedia.org/wiki/Horizontal_coordinate_system): 
+
+- elevation: angle above the horizon, 
+- azimuth: angle around the horizon, measured from true north increasing 
+  eastward, and 
+- [declination](https://en.wikipedia.org/wiki/Declination): angle between
+  celestial equator and the observers, fundamental plane, i.e. the plane that
+  contains the horizon
+- fractional hour after midnight
+    
+In the example the azimuth increases from slightly more than zero at midnight to 
+2$\pi$ 
+at the following midnight. Elevation increases from negative values to 0 at 
+sunset, 
+maximum at noon declining to zero at sunset. Declination in early winter 
+decreases to
+more negative values until it reaches the negative of the earth axial tilt on 
+December solistice.
+
+
+### Sunrise and sunset
+
+Sunrise and sunset are computed in fractional hours after midnight. 
+Neglecting the difference between solar time and local time introduces a bias.
+Daylength is not biased by neglecting solar time correction.
+
+```{r}
+today <- as.POSIXlt(ISOdate(2018,3,1,0, tz = "Etc/GMT-1"))
+(sunrise <- computeSunriseHour(today, latDeg = latDeg
+                               , isCorrectSolartime = FALSE))
+(sunrise <- computeSunriseHour(today, latDeg = latDeg, longDeg = 11.586))
+(sunset <- computeSunsetHour(today, latDeg = latDeg, longDeg = 11.586))
+(daylength <- computeDayLength(today, latDeg = latDeg))
+```
+
+Sunrise is set to 12 for polar nights and 0 for polar days.
+Similarly, sunset is set to 12 for polar nights and to 0 for polar days.
+```{r}
+doy <- 1:366
+sunrise <- computeSunriseHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE)
+sunset <- computeSunsetHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE)
+par(mfrow = c(1,2)); plot(sunrise ~ doy ); plot(sunset ~ doy )
+```
+
+### Further Utilities
+
+Functions `computeIsDayByHour` and `computeIsDayByLocation` 
+quickly classify daytime and nighttime records of a dataset.
+
+```{r}
+dateSeq <- seq( 
+  as.POSIXct("2017-03-20", tz = "Etc/GMT-1")
+  , as.POSIXct("2017-03-21", tz = "Etc/GMT-1")
+  , by = "30 min")
+isDay <- computeIsDayByLocation(dateSeq, latDeg = 50.93, longDeg = 11.59)
+```
+
+```{r echo=FALSE}
+plot( isDay ~ dateSeq )
+sunrise <- computeSunriseHour(dateSeq[1], latDeg = 50.93, longDeg = 11.59)
+sunset <- computeSunsetHour(dateSeq[1], latDeg = 50.93, longDeg = 11.59)
+abline( v = trunc(dateSeq[1], units = "days") + c(sunrise,sunset)*3600L )
+```
+
+Function `getHoursAheadOfUTC` provides the integer timeZone argument 
+of a timestamp, required other functions of the package.
+Similarly, `getFractionalHours` provides fractional hours after midnight of
+a timestamp.
+
+```{r}
+#around daylight saving time step in Central European time
+tzBack <- Sys.getenv('TZ'); Sys.setenv(TZ = 'CET') 
+  t1 <- as.POSIXct("2018-10-28 01:30")
+  (dateSeq <- seq(t1, by = "30 min", length.out = 6))
+  (hoursAhead <- getHoursAheadOfUTC(dateSeq))
+  (facHours <- getFractionalHours(dateSeq))
+Sys.setenv(TZ = tzBack)
+```
+
+<!-- 
+See the [package vignettes](https://github.com/bgctw/solartime/tree/master/vignettes) (*.md) for further examples.
+-->
+
