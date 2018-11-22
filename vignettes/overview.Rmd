@@ -8,6 +8,9 @@ vignette: >
   %\usepackage[UTF-8]{inputenc}
 ---
 
+<!--
+rmarkdown::render("vignettes/overview.Rmd", output_format = "md_document")
+-->
 ```{r, include = FALSE}
 # do not execute on CRAN: 
 # https://stackoverflow.com/questions/28961431/computationally-heavy-r-vignettes
@@ -17,7 +20,8 @@ vignette: >
 ```
 
 ```{r setup, include = FALSE}
-#rmarkdown::render("vignettes/overview.Rmd")
+#
+
 knitr::opts_knit$set(root.dir = '..')
 knitr::opts_chunk$set(
     fig.align = "center"
@@ -67,7 +71,7 @@ latDeg <- 50.93; longDeg <- 11.57
 The time difference shifts during the year because of 
 [earth orbit's eccentricity](https://en.wikipedia.org/wiki/Orbital_eccentricity).
 
-```{r}
+```{r eccentricityPlot}
 doy <- 1:366
 locaDiffDoi <- computeSolarToLocalTimeDifference(longDeg, 1L, doy)*60
 plot(locaDiffDoi  ~ doy, ylab = "time difference solar - local time (min)")
@@ -127,7 +131,7 @@ today <- as.POSIXlt(ISOdate(2018,3,1,0, tz = "Etc/GMT-1"))
 
 Sunrise is set to 12 for polar nights and 0 for polar days.
 Similarly, sunset is set to 12 for polar nights and to 0 for polar days.
-```{r}
+```{r polarSunrise}
 doy <- 1:366
 sunrise <- computeSunriseHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE)
 sunset <- computeSunsetHourDoy( doy, latDeg = +80, isCorrectSolartime = FALSE)
@@ -147,7 +151,7 @@ dateSeq <- seq(
 isDay <- computeIsDayByLocation(dateSeq, latDeg = 50.93, longDeg = 11.59)
 ```
 
-```{r echo=FALSE}
+```{r isDayPlot,echo=FALSE}
 plot( isDay ~ dateSeq )
 sunrise <- computeSunriseHour(dateSeq[1], latDeg = 50.93, longDeg = 11.59)
 sunset <- computeSunsetHour(dateSeq[1], latDeg = 50.93, longDeg = 11.59)
