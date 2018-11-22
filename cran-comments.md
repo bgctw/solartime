@@ -8,7 +8,7 @@ Provide to the R community with utilities to compute
 
 ## Test environments
 * local R 3.4.4 on Mint17 64bit
-* Ubuntu 14.04.5 LTS (on travis-ci), 14.04
+* Ubuntu 14.04.5 LTS (on travis-ci), R 3.5.1
 * win-builder (devel and release)
 
 ## R CMD check results
