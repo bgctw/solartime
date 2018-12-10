@@ -18,8 +18,8 @@ Installation
 ------------
 
 ``` r
-# From CRAN (in future)
-#install.packages("solartime")
+# From CRAN 
+install.packages("solartime")
 
 # Or the the development version from GitHub:
 # install.packages("devtools")
