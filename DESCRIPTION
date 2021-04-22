@@ -1,6 +1,6 @@
 Package: solartime
 Title: Utilities Dealing with Solar Time Such as Sun Position and Time of Sunrise
-Version: 0.0.1
+Version: 0.0.2
 Author: Thomas Wutzler
 Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
 Description: Provide utilities to work with solar time, 
@@ -9,9 +9,7 @@ Description: Provide utilities to work with solar time,
 Depends: R (>= 3.2.0)
 URL: https://github.com/bgctw/solartime
 Imports: lubridate
-Suggests: testthat, knitr
+Suggests: testthat, knitr, rmarkdown
 License: GPL-3
 LazyLoad: yes
-LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1

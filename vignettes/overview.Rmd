@@ -78,8 +78,8 @@ plot(locaDiffDoi  ~ doy, ylab = "time difference solar - local time (min)")
 abline(h = localDiff); abline(h = 0, lty = "dotted")
 ```
 
-During most days, the sun culmintes after noon, but during a few days 
-in autumn the sun culminates earlier than noon of the lcoal time zone.
+During most days, the sun culminates after noon, but during a few days 
+in autumn the sun culminates earlier than noon of the local time zone.
 
 
 ### Computing sun position
@@ -111,7 +111,7 @@ sunset,
 maximum at noon declining to zero at sunset. Declination in early winter 
 decreases to
 more negative values until it reaches the negative of the earth axial tilt on 
-December solistice.
+December solstice.
 
 
 ### Sunrise and sunset

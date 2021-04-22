@@ -4,8 +4,8 @@ rmarkdown::render("vignettes/overview.Rmd", output_format = "md_document")
 Overview
 --------
 
-The `solartime` package provides utilities to work with solar time, i.e.
-where noon is exactly when sun culminates. It provides functions to
+The `solartime` package provides utilities to work with solar time,
+i.e. where noon is exactly when sun culminates. It provides functions to
 compute
 
 -   difference between local time zone and solar time
@@ -19,7 +19,7 @@ Usage
 
 ### Difference between solar time and local time
 
-The city of Jena is located west of the timezone's meridian. Hence, the
+The city of Jena is located west of the timezone’s meridian. Hence, the
 sun culminates around 13 minutes later.
 
     latDeg <- 50.93; longDeg <- 11.57
@@ -27,7 +27,7 @@ sun culminates around 13 minutes later.
 
     ## [1] -13.72
 
-The time difference shifts during the year because of [earth orbit's
+The time difference shifts during the year because of [earth orbit’s
 eccentricity](https://en.wikipedia.org/wiki/Orbital_eccentricity).
 
     doy <- 1:366
@@ -37,8 +37,8 @@ eccentricity](https://en.wikipedia.org/wiki/Orbital_eccentricity).
 
 <img src="overview_files/figure-markdown_strict/eccentricityPlot-1.png" style="display: block; margin: auto;" />
 
-During most days, the sun culmintes after noon, but during a few days in
-autumn the sun culminates earlier than noon of the lcoal time zone.
+During most days, the sun culminates after noon, but during a few days
+in autumn the sun culminates earlier than noon of the local time zone.
 
 ### Computing sun position
 
@@ -72,8 +72,8 @@ coordinatesystem](https://en.wikipedia.org/wiki/Horizontal_coordinate_system):
 -   azimuth: angle around the horizon, measured from true north
     increasing eastward, and
 -   [declination](https://en.wikipedia.org/wiki/Declination): angle
-    between celestial equator and the observers, fundamental plane, i.e.
-    the plane that contains the horizon
+    between celestial equator and the observers, fundamental plane,
+    i.e. the plane that contains the horizon
 -   fractional hour after midnight
 
 In the example the azimuth increases from slightly more than zero at
@@ -81,7 +81,7 @@ midnight to 2*π* at the following midnight. Elevation increases from
 negative values to 0 at sunset, maximum at noon declining to zero at
 sunset. Declination in early winter decreases to more negative values
 until it reaches the negative of the earth axial tilt on December
-solistice.
+solstice.
 
 ### Sunrise and sunset
 
@@ -140,9 +140,8 @@ timestamp.
       t1 <- as.POSIXct("2018-10-28 01:30")
       (dateSeq <- seq(t1, by = "30 min", length.out = 6))
 
-    ## [1] "2018-10-28 01:30:00 CEST" "2018-10-28 02:00:00 CEST"
-    ## [3] "2018-10-28 02:30:00 CEST" "2018-10-28 02:00:00 CET" 
-    ## [5] "2018-10-28 02:30:00 CET"  "2018-10-28 03:00:00 CET"
+    ## [1] "2018-10-28 01:30:00 CEST" "2018-10-28 02:00:00 CEST" "2018-10-28 02:30:00 CEST"
+    ## [4] "2018-10-28 02:00:00 CET"  "2018-10-28 02:30:00 CET"  "2018-10-28 03:00:00 CET"
 
       (hoursAhead <- getHoursAheadOfUTC(dateSeq))
 

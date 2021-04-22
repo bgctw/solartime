@@ -11,6 +11,7 @@ vignettes/.*_files/
 vignettes/.*\.html
 vignettes/.*\.md
 ^scratch$
+^revdep$
 ^tmp$
 ^.git$
 ^.gitignore$

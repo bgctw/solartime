@@ -3,7 +3,7 @@
 \title{computeSolarToLocalTimeDifference}
 \description{computes the time difference in hours between (apparent) solar time and local time}
 \usage{computeSolarToLocalTimeDifference(longDeg, 
-    timeZone, doy = integer(0), fracYearInRad = 2 * 
+    timeZone, doy = NA, fracYearInRad = 2 * 
         pi * (doy - 1)/365.24)}
 \arguments{
   \item{longDeg}{Longitude in (decimal) degrees}

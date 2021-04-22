@@ -181,9 +181,9 @@ attr(computeSunsetHourDoy,"ex") <- function(){
 #' @export
 computeSolarToLocalTimeDifference <- function(
   ### computes the time difference in hours between (apparent) solar time and local time
-  longDeg		                  ##<< Longitude in (decimal) degrees
-  , timeZone	              ##<< Time zone (in hours) ahead of UTC (Berlin is +1)
-  , doy = integer(0)	##<< integer vector with day of year [DoY, 1..366],
+  longDeg		          ##<< Longitude in (decimal) degrees
+  , timeZone	        ##<< Time zone (in hours) ahead of UTC (Berlin is +1)
+  , doy = NA	        ##<< integer vector with day of year [DoY, 1..366],
   ## Specify NA get mean solar time across the year instead of apparent solar
   ## time (i.e. with differences throughout the year due to eccentricity
   ## of earth orbit)
@@ -193,10 +193,10 @@ computeSolarToLocalTimeDifference <- function(
   # convert solar time to local winter time
   # Equation of time in hours, accounting for changes in the time of solar noon
   # to local time zone
-  eqTimeHour <- if (!length(fracYearInRad) || is.na((fracYearInRad))) 0 else
+  eqTimeHour <- ifelse(is.na(fracYearInRad), 0,
     (0.0072*cos(fracYearInRad) - 0.0528*cos(2*fracYearInRad)
      - 0.0012*cos(3*fracYearInRad) - 0.1229*sin(fracYearInRad)
-     - 0.1565*sin(2*fracYearInRad) - 0.0041*sin(3*fracYearInRad))
+     - 0.1565*sin(2*fracYearInRad) - 0.0041*sin(3*fracYearInRad)))
   # Local time in hours
   localTimeHour <- (longDeg/15 - timeZone)
   ##value<< time difference in hours to be added to local winter time
