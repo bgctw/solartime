@@ -1,6 +1,6 @@
 .tmp.f <- function(){
   require(testthat)
-  require(ggplot2)
+  #require(ggplot2) # warnings on R CMD check if uncommented
 }
 context("compute_sun_position")
 
