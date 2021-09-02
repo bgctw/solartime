@@ -56,7 +56,7 @@ latDeg <- 50.93; longDeg <- 11.57
 doy <- 1:366
 locaDiffMin <- 60 * computeSolarToLocalTimeDifference(
   longDeg, timeZone = 1L, doy = doy)
-plot(locaDiffMin  ~ doi, ylab = "time difference solar - local time (min)")
+plot(locaDiffMin  ~ doy, ylab = "time difference solar - local time (min)")
 abline(h = localDiff); abline(h = 0, lty = "dotted")
 ```
 
