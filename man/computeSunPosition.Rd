@@ -4,7 +4,7 @@
 \description{Calculate the position of the sun}
 \usage{computeSunPosition(timestamp, latDeg, longDeg)}
 \arguments{
-  \item{timestamp}{POSIXct}
+  \item{timestamp}{POSIXct having a valid tzone attribute,}
   \item{latDeg}{Latitude in (decimal) degrees}
   \item{longDeg}{Longitude in (decimal) degrees}
 }

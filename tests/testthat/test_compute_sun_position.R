@@ -19,7 +19,6 @@ test_that("Jena case",{
   expect_equal(as.POSIXlt(ans$timestamp[imax])$hour, 12)
 })
 
-
 test_that("setLocalTimeZone",{
   # for correct hour need to use local time zone - internally convert to UTC
   longDeg <- 150.745147
@@ -57,4 +56,17 @@ test_that("Sidney case",{
       geom_point(position = position_jitter())
   }
   expect_true(all(ans$hour > -1 & ans$hour <= 25))
+})
+
+test_that("error on providing timestamp wihtout time zone attribute",{
+  latDeg <- -33.611627
+  longDeg <- 150.745147
+  times <- seq(
+    ISOdate(2019, 4, 4, 0), by = "2 hour", length.out = 3)
+  attr(times, "tzone") <- NULL
+  expect_error(
+    ans0 <- computeSunPosition(times, latDeg = latDeg, longDeg = longDeg)
+    ,"timezone"
+  )
+  ans0 <- computeSunPosition(structure(times, tzone='UTC'), latDeg = latDeg, longDeg = longDeg)
 })
