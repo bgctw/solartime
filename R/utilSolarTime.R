@@ -5,14 +5,30 @@ computeSunPosition <- function(
   , latDeg           ##<< Latitude in (decimal) degrees
   , longDeg          ##<< Longitude in (decimal) degrees
 ) {
-  doy = yday(timestamp) #as.POSIXlt(timestamp)$yday + 1  ##<<
+  timestampLoc <- setLocalTimeZone(timestamp, longDeg)
+  doy = yday(timestampLoc) #as.POSIXlt(timestampLoc)$yday + 1  ##<<
   ## Data vector with day of year (DoY) starting at 1
   ## , same length as Hour or length 1
-  hour = getFractionalHours(timestamp)      ##<<
+  hour = getFractionalHours(timestampLoc)      ##<<
   ## Data vector with time as fractional decimal hour of local time zone
-  timeZone = getHoursAheadOfUTC(timestamp) ##<< Time zone (in hours)
+  hoursAheadOfUTC = getHoursAheadOfUTC(timestampLoc) ##<< Time zone (in hours)
   ##value<< as returned by \code{\link{computeSunPositionDoyHour}}
-  computeSunPositionDoyHour(doy, hour, latDeg, longDeg, timeZone)
+  computeSunPositionDoyHour(doy, hour, latDeg, longDeg, hoursAheadOfUTC)
+}
+
+
+#' @export
+setLocalTimeZone <- function(
+  ### modify tzone attribute of timestamp to 'GMT+x' for local to given longitude
+  timestamp          ##<< POSIXct
+  , longDeg          ##<< Longitude in (decimal) degrees
+) {
+  hourUTCDiff <- round(longDeg/15) # difference to UTC
+  signchar = if (hourUTCDiff > 0) "-" else "+" # tzone uses opposite sign
+  tzone_str = paste0("Etc/GMT", signchar, hourUTCDiff)
+  attr(timestamp, "tzone") <- tzone_str
+  ##value<< \code{timestamp} with modified tzone attribute
+  timestamp
 }
 
 #' @export
