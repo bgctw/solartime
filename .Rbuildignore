@@ -20,3 +20,4 @@ vignettes/.*\.md
 ^readme.txt$
 ^.*\.Rproj$
 ^\.travis\.yml$
+^\.github$
