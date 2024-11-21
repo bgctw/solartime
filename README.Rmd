@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/solartime)](http://cran.r-project.org/package=solartime)
 [![R-CMD-check](https://github.com/bgctw/solartime/workflows/R-CMD-check/badge.svg)](https://github.com/bgctw/solartime/actions)
+[![R-CMD-check](https://github.com/bgctw/solartime/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bgctw/solartime/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Overview
