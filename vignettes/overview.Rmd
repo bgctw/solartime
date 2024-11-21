@@ -165,7 +165,7 @@ a timestamp.
 
 ```{r}
 #around daylight saving time step in Central European time
-tzBack <- Sys.getenv('TZ'); Sys.setenv(TZ = 'CET') 
+tzBack <- Sys.getenv('TZ'); Sys.setenv(TZ = "Europe/Berlin") 
   t1 <- as.POSIXct("2018-10-28 01:30")
   (dateSeq <- seq(t1, by = "30 min", length.out = 6))
   (hoursAhead <- getHoursAheadOfUTC(dateSeq))

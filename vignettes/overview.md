@@ -1,8 +1,8 @@
 <!--
 rmarkdown::render("vignettes/overview.Rmd", output_format = "md_document")
 -->
-Overview
---------
+
+## Overview
 
 The `solartime` package provides utilities to work with solar time,
 i.e. where noon is exactly when sun culminates. It provides functions to
@@ -12,8 +12,7 @@ compute
 -   sun position
 -   sunrise, sunset, daylength, and daytime flags
 
-Usage
------
+## Usage
 
     require(solartime)
 
@@ -136,12 +135,11 @@ a timestamp, required other functions of the package. Similarly,
 timestamp.
 
     #around daylight saving time step in Central European time
-    tzBack <- Sys.getenv('TZ'); Sys.setenv(TZ = 'CET') 
+    tzBack <- Sys.getenv('TZ'); Sys.setenv(TZ = "Europe/Berlin") 
       t1 <- as.POSIXct("2018-10-28 01:30")
       (dateSeq <- seq(t1, by = "30 min", length.out = 6))
 
-    ## [1] "2018-10-28 01:30:00 CEST" "2018-10-28 02:00:00 CEST" "2018-10-28 02:30:00 CEST"
-    ## [4] "2018-10-28 02:00:00 CET"  "2018-10-28 02:30:00 CET"  "2018-10-28 03:00:00 CET"
+    ## [1] "2018-10-28 01:30:00 CEST" "2018-10-28 02:00:00 CEST" "2018-10-28 02:30:00 CEST" "2018-10-28 02:00:00 CET"  "2018-10-28 02:30:00 CET"  "2018-10-28 03:00:00 CET"
 
       (hoursAhead <- getHoursAheadOfUTC(dateSeq))
 
