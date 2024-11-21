@@ -2,6 +2,10 @@ Package: solartime
 Title: Utilities Dealing with Solar Time Such as Sun Position and Time of Sunrise
 Version: 0.0.4
 Author: Thomas Wutzler
+Authors@R: person(given = "Thomas",
+                    family = "Wutzler",
+                    role = c("aut", "cre"),
+                    email = "twutz@bgc-jena.mpg.de")
 Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
 Description: Provide utilities to work with solar time, 
   i.e. where noon is exactly when sun culminates.
