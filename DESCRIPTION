@@ -1,7 +1,7 @@
 Package: solartime
 Title: Utilities Dealing with Solar Time Such as Sun Position and Time of Sunrise
 Version: 0.0.4
-Author: Thomas Wutzler
+Author: Thomas Wutzler [aut, cre]
 Authors@R: person(given = "Thomas",
                     family = "Wutzler",
                     role = c("aut", "cre"),
