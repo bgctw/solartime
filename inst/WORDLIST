@@ -1,3 +1,5 @@
+CET
+CMD
 Daylength
 DoY
 Jena
@@ -23,7 +25,9 @@ getSolarTimeHour
 isCorrectSolartime
 md
 rmarkdown
+setLocalTimeZone
 timeZone
 timezone's
 timezone’s
+tzone
 π
