@@ -1,6 +1,6 @@
 Package: solartime
 Title: Utilities Dealing with Solar Time Such as Sun Position and Time of Sunrise
-Version: 0.0.3
+Version: 0.0.4
 Author: Thomas Wutzler
 Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
 Description: Provide utilities to work with solar time, 
