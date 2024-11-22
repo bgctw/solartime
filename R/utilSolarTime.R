@@ -2,8 +2,8 @@
 computeSunPosition <- function(
   ### Calculate the position of the sun
   timestamp          ##<< POSIXct having a valid tzone attribute,
-  , latDeg           ##<< Latitude in (decimal) degrees
-  , longDeg          ##<< Longitude in (decimal) degrees
+  , latDeg           ##<< Latitude in (decimal) degrees (scalar)
+  , longDeg          ##<< Longitude in (decimal) degrees (scalar)
 ) {
   if (is.null(attributes(timestamp)$tzone)) stop(
     "Expected timestamp to have a timezone, but has none. "
@@ -11,6 +11,16 @@ computeSunPosition <- function(
     , " e.g. by structure(mytimestamp, tzone='UTC')"
     , " and check that times are still correct.")
   # express same time in different time zone for correct doy and hour
+  if(length(latDeg) != 1) {
+    warning("Expected latDeg to be a scalar value, but was length ",
+            length(longDeg), ". Using the first value.")
+    latDeg = latDeg[1]
+  }
+  if(length(longDeg) != 1) {
+    warning("Expected longDeg to be a scalar value, but was length ",
+            length(longDeg), ". Using the first value.")
+    longDeg = longDeg[1]
+  }
   timestampLoc <- setLocalTimeZone(timestamp, longDeg)
   doy = yday(timestampLoc) #as.POSIXlt(timestampLoc)$yday + 1  ##<<
   ## Data vector with day of year (DoY) starting at 1

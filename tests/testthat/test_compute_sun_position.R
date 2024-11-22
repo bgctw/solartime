@@ -70,3 +70,15 @@ test_that("error on providing timestamp wihtout time zone attribute",{
   )
   ans0 <- computeSunPosition(structure(times, tzone='UTC'), latDeg = latDeg, longDeg = longDeg)
 })
+
+test_that("warning on providing lat,long vectors rather than scalars",{
+  times <- seq(
+    ISOdate(2018, 11, 21, 0, tz = "Etc/GMT-1"), by = "2 hour", length.out = 13)
+  latDeg <- rep(-33.611627, length(times))
+  longDeg <- rep(150.745147, length(times))
+  expect_warning(
+    ans0 <- computeSunPosition(times, latDeg = latDeg, longDeg = longDeg)
+  )
+  ans1 <- computeSunPosition(times, latDeg = latDeg[1], longDeg = longDeg[1])
+  expect_equal(ans0, ans1)
+})
