@@ -41,7 +41,7 @@ setLocalTimeZone <- function(
 ) {
   hourUTCDiff <- round(longDeg/15) # difference to UTC
   signchar = if (hourUTCDiff > 0) "-" else "+" # tzone uses opposite sign
-  tzone_str = paste0("Etc/GMT", signchar, hourUTCDiff)
+  tzone_str = paste0("Etc/GMT", signchar, abs(hourUTCDiff))
   ##value<< \code{timestamp} with modified tzone attribute. Its the same time
   ## point expressed in another time zone. E.g. "2019-04-04 00:00:00 UTC"
   ## becomes "2019-04-04 10:00:00 +10" for a longitude of +150 (Sydney, Australia)
