@@ -159,18 +159,20 @@ abline( v = trunc(dateSeq[1], units = "days") + c(sunrise,sunset)*3600L )
 ```
 
 Function `getHoursAheadOfUTC` provides the integer timeZone argument 
-of a timestamp, required other functions of the package.
+of a timestamp, required by other functions of the package.
 Similarly, `getFractionalHours` provides fractional hours after midnight of
 a timestamp.
 
 ```{r}
 #around daylight saving time step in Central European time
-tzBack <- Sys.getenv("TZ"); Sys.setenv(TZ = "Europe/Berlin") 
-  t1 <- as.POSIXct("2018-10-28 01:30")
-  (dateSeq <- seq(t1, by = "30 min", length.out = 6))
-  (hoursAhead <- getHoursAheadOfUTC(dateSeq))
-  (facHours <- getFractionalHours(dateSeq))
-Sys.setenv(TZ = tzBack)
+t1 <- as.POSIXct("2018-10-28 01:30", tz = "Europe/Berlin")
+datesCET <- seq(t1, by = "30 min", length.out = 6)
+datesUTC <- as.POSIXct(datesCET, tz = "UTC")
+#
+hoursAheadOfUTC <- getHoursAheadOfUTC(datesCET)
+fracHours <- getFractionalHours(datesCET)
+#
+data.frame(datesUTC, datesCET, hoursAheadOfUTC, fracHours)
 ```
 
 <!-- 

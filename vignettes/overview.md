@@ -135,21 +135,19 @@ a timestamp, required other functions of the package. Similarly,
 timestamp.
 
     #around daylight saving time step in Central European time
-    tzBack <- Sys.getenv('TZ'); Sys.setenv(TZ = "Europe/Berlin") 
-      t1 <- as.POSIXct("2018-10-28 01:30")
-      (dateSeq <- seq(t1, by = "30 min", length.out = 6))
+    t1 <- as.POSIXct("2018-10-28 01:30", tz = "Europe/Berlin")
+    dateSeq <- seq(t1, by = "30 min", length.out = 6)
+    hoursAheadOfUTC <- getHoursAheadOfUTC(dateSeq)
+    fracHours <- getFractionalHours(dateSeq)
+    data.frame(dateSeq, hoursAheadOfUTC, fracHours)
 
-    ## [1] "2018-10-28 01:30:00 CEST" "2018-10-28 02:00:00 CEST" "2018-10-28 02:30:00 CEST" "2018-10-28 02:00:00 CET"  "2018-10-28 02:30:00 CET"  "2018-10-28 03:00:00 CET"
-
-      (hoursAhead <- getHoursAheadOfUTC(dateSeq))
-
-    ## [1] 2 2 2 1 1 1
-
-      (facHours <- getFractionalHours(dateSeq))
-
-    ## [1] 1.5 2.0 2.5 3.0 3.5 4.0
-
-    Sys.setenv(TZ = tzBack)
+    ##               dateSeq hoursAheadOfUTC fracHours
+    ## 1 2018-10-28 01:30:00               2       1.5
+    ## 2 2018-10-28 02:00:00               2       2.0
+    ## 3 2018-10-28 02:30:00               2       2.5
+    ## 4 2018-10-28 02:00:00               1       3.0
+    ## 5 2018-10-28 02:30:00               1       3.5
+    ## 6 2018-10-28 03:00:00               1       4.0
 
 <!-- 
 See the [package vignettes](https://github.com/bgctw/solartime/tree/master/vignettes) (*.md) for further examples.
