@@ -13,8 +13,13 @@ Description: Provide utilities to work with solar time,
 Depends: R (>= 3.2.0)
 URL: https://github.com/bgctw/solartime
 Imports: lubridate
-Suggests: testthat, knitr, rmarkdown
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown,
+    spelling
 License: GPL-3
 LazyLoad: yes
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
+Language: en-US
